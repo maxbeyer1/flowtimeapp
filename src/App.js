@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useTimer, useStopwatch } from "react-timer-hook"; 
 
 import WorkStopwatch from "./components/WorkStopwatch";
 import BreakTimer from "./components/BreakTimer";
+import SettingsModal from "./components/SettingsModal";
 
 const App = () => {
   const [isWorking, setWorking] = useState(true);
@@ -19,6 +19,8 @@ const App = () => {
 
   return (
     <div>
+      <SettingsModal />
+      <div>
       { isWorking 
         ? <WorkStopwatch changeState={handleWorkingState} /> // pass function to child
         : <BreakTimer 
@@ -27,6 +29,7 @@ const App = () => {
             clock={workingSeconds / breakDivisor} // timer amount
           /> 
       }
+    </div>
     </div>
   );
 };

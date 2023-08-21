@@ -1,5 +1,7 @@
 import React from "react";
+
 import { useStopwatch } from "react-timer-hook";
+import { Button, Flex } from "@radix-ui/themes";
 
 const WorkStopwatch = ({ changeState }) => {
   const {
@@ -24,10 +26,12 @@ const WorkStopwatch = ({ changeState }) => {
           :<span>{seconds.toString().padStart(2, '0')}</span>
       </div>
       <p>{isRunning ? 'Running' : 'Not running'}</p>
-      <button onClick={start}>Start</button>
-      <button onClick={pause}>Pause</button>
-      <button onClick={() => { pause(); changeState(totalSeconds); }}>Stop</button>
-      <button onClick={reset}>Reset</button>
+      <Flex justify="center" gap="3">
+        <Button variant="outline" onClick={start}>Start</Button>
+        <Button variant="outline" onClick={pause}>Pause</Button>
+        <Button variant="outline" onClick={() => { pause(); changeState(totalSeconds); }}>Stop</Button>
+        <Button variant="outline" onClick={reset}>Reset</Button>
+      </Flex>
     </div>
   );
 };
