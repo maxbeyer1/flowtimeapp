@@ -4,20 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import '@radix-ui/themes/styles.css';
-import { Theme } from '@radix-ui/themes';
+import { MantineProvider } from '@mantine/core';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <html>
-      <body>
-        <Theme>
-          <App />
-        </Theme>
-      </body>
-    </html>
-  </React.StrictMode>
+  <MantineProvider withGlobalStyles withNormalizeCSS>
+    <App />
+  </MantineProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

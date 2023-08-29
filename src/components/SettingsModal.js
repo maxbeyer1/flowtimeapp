@@ -1,44 +1,63 @@
 import React from "react";
 
-import { Dialog, Button, Flex, Text, TextField } from "@radix-ui/themes";
+import { useDisclosure, useInputState } from '@mantine/hooks';
+import { Modal, Button, NumberInput, Group, createStyles } from '@mantine/core';
 
-const SettingsModal = () => {
+const useStyles = createStyles((theme) => ({
+  content: {
+    borderRadius: '12px',
+  },
+  title: {
+    fontWeight: 600,
+  },
+}));
+
+const SettingsModal = ({ updateSettings }) => {
+  // States for modal and input
+  const [opened, { open, close }] = useDisclosure(false);
+  const [divisorValue, setDivisorValue] = useInputState(5);
+
+  // CSS classes
+  const { classes } = useStyles();
+
   return (
-    <Dialog.Root>
-      <Dialog.Trigger>
-        <Button variant="outline">Settings</Button>
-      </Dialog.Trigger>
+    <>
+      <Modal 
+        opened={opened} 
+        onClose={close} 
+        title="Settings" 
+        classNames={{ 
+          content: classes.content,
+          title: classes.title, 
+        }} 
+        centered
+      >
+        <NumberInput
+          value={divisorValue}
+          onChange={setDivisorValue}
+          placeholder="(default: 5)"
+          label="Break Divisor"
+          radius="md"
+          hideControls
+        />
 
-      <Dialog.Content style={{ maxWidth: 450 }}>
-        <Dialog.Title>Settings</Dialog.Title>
-        <Dialog.Description size="2" mb="4" mt="-2">
-          Make changes to your preferences.
-        </Dialog.Description>
-
-        <Flex direction="column" gap="3">
-          <label>
-            <Text as="div" size="2" mb="1" weight="bold">
-              Break Divisor
-            </Text>
-            <TextField.Input
-              defaultValue="5"
-            />
-          </label>
-        </Flex>
-
-        <Flex gap="3" mt="4" justify="end">
-          <Dialog.Close>
-            <Button variant="soft" color="gray">
+        <Group position="right" mt="md">
+          <Button 
+            variant="default" 
+            onClick={close}>
               Cancel
-            </Button>
-          </Dialog.Close>
-          <Dialog.Close>
-            <Button>Save</Button>
-          </Dialog.Close>
-        </Flex>
-      </Dialog.Content>
-    </Dialog.Root>
+          </Button>
+          <Button 
+            variant="outline"
+            onClick={() => { close(); updateSettings(divisorValue); }}>
+              Save changes
+          </Button>
+        </Group>
+      </Modal>
+
+      <Button onClick={open}>Open modal</Button>
+    </>
   );
-}
+};
 
 export default SettingsModal;

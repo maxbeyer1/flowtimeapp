@@ -7,7 +7,7 @@ import SettingsModal from "./components/SettingsModal";
 const App = () => {
   const [isWorking, setWorking] = useState(true);
   const [workingSeconds, setWorkingSeconds] = useState(0);
-  const [breakDivisor, setBreakDivisor] = useState(1);
+  const [breakDivisor, setBreakDivisor] = useState(5);
 
   const handleWorkingState = ( workingSeconds ) => {
     setWorking(isWorking => !isWorking);
@@ -19,7 +19,7 @@ const App = () => {
 
   return (
     <div>
-      <SettingsModal />
+      <SettingsModal updateSettings={setBreakDivisor} />
       <div>
       { isWorking 
         ? <WorkStopwatch changeState={handleWorkingState} /> // pass function to child

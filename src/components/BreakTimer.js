@@ -1,5 +1,8 @@
 import React from "react";
+
+import { Group, Button, Title } from "@mantine/core";
 import { useTimer } from "react-timer-hook";
+import TimeDisplay from "./TimeDisplay";
 
 const BreakTimer = ({ changeState, expiryTimestamp, clock }) => {
   const {
@@ -17,21 +20,27 @@ const BreakTimer = ({ changeState, expiryTimestamp, clock }) => {
 
   return (
     <div style={{textAlign: 'center'}}>
-      <p>Timer</p>
-      <div style={{fontSize: '100px'}}>
-        <span>{hours.toString().padStart(2, '0')}</span>
-          :<span>{minutes.toString().padStart(2, '0')}</span>
-          :<span>{seconds.toString().padStart(2, '0')}</span>
-      </div>
+      <Title order={2}>Timer</Title>
+      <TimeDisplay
+        hours={hours} 
+        minutes={minutes} 
+        seconds={seconds} 
+      />
       <p>{isRunning ? 'Running' : 'Not running'}</p>
-      <button onClick={resume}>Start</button>
-      <button onClick={pause}>Pause</button>
-      <button onClick={() => {
-        // Restarts to original timer
-        const time = new Date();
-        time.setSeconds(time.getSeconds() + clock);
-        restart(time)
-      }}>Restart</button>
+      <Group position="center" spacing="xs">
+        <Button variant="outline" onClick={resume}>Start</Button>
+        <Button variant="outline" onClick={pause}>Pause</Button>
+        <Button
+          variant="outline" 
+          onClick={() => {
+            // Restarts to original timer
+            const time = new Date();
+            time.setSeconds(time.getSeconds() + clock);
+            restart(time)
+          }}>
+            Restart
+        </Button>
+      </Group>
     </div>
   );
 };

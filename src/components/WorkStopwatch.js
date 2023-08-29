@@ -1,7 +1,8 @@
 import React from "react";
 
+import { Button, Group, Title } from "@mantine/core";
 import { useStopwatch } from "react-timer-hook";
-import { Button, Flex } from "@radix-ui/themes";
+import TimeDisplay from "./TimeDisplay";
 
 const WorkStopwatch = ({ changeState }) => {
   const {
@@ -18,20 +19,19 @@ const WorkStopwatch = ({ changeState }) => {
 
   return (
     <div style={{textAlign: 'center'}}>
-      <p>Stopwatch</p>
-      <div style={{fontSize: '100px'}}>
-        {/* Need a better solution than padStart (put time in its own component maybe) */}
-        <span>{hours.toString().padStart(2, '0')}</span>
-          :<span>{minutes.toString().padStart(2, '0')}</span>
-          :<span>{seconds.toString().padStart(2, '0')}</span>
-      </div>
+      <Title order={2}>Stopwatch</Title>
+      <TimeDisplay
+        hours={hours} 
+        minutes={minutes} 
+        seconds={seconds} 
+      />
       <p>{isRunning ? 'Running' : 'Not running'}</p>
-      <Flex justify="center" gap="3">
+      <Group position="center" spacing="xs">
         <Button variant="outline" onClick={start}>Start</Button>
         <Button variant="outline" onClick={pause}>Pause</Button>
         <Button variant="outline" onClick={() => { pause(); changeState(totalSeconds); }}>Stop</Button>
         <Button variant="outline" onClick={reset}>Reset</Button>
-      </Flex>
+      </Group>
     </div>
   );
 };
