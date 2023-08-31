@@ -2,7 +2,7 @@ import React from "react";
 
 import { ActionIcon, Group } from "@mantine/core";
 import { useStopwatch } from "react-timer-hook";
-import { IconArrowBackUp, IconPlayerPause, IconPlayerPlay, IconPlayerStop } from "@tabler/icons-react";
+import { IconReload, IconPlayerPause, IconPlayerPlay, IconPlayerStop } from "@tabler/icons-react";
 
 import TimeDisplay from "./TimeDisplay";
 
@@ -39,7 +39,7 @@ const WorkStopwatch = ({ changeState }) => {
           <IconPlayerStop />
         </ActionIcon>
         <ActionIcon color="dark" onClick={reset}>
-          <IconArrowBackUp />
+          <IconReload />
         </ActionIcon>
       </Group>
     </div>

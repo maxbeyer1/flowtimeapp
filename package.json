@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.1",
+    "@fontsource-variable/roboto-mono": "^5.0.9",
+    "@fontsource/mitr": "^5.0.8",
     "@mantine/core": "^6.0.19",
     "@mantine/hooks": "^6.0.19",
     "@mui/joy": "^5.0.0-beta.3",

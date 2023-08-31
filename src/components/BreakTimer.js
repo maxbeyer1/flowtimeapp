@@ -2,7 +2,7 @@ import React from "react";
 
 import { Group, ActionIcon } from "@mantine/core";
 import { useTimer } from "react-timer-hook";
-import { IconArrowBackUp, IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react";
+import { IconPlayerPause, IconPlayerPlay, IconPlayerStop, IconReload } from "@tabler/icons-react";
 
 import TimeDisplay from "./TimeDisplay";
 
@@ -36,6 +36,10 @@ const BreakTimer = ({ changeState, expiryTimestamp, clock }) => {
               <IconPlayerPlay />
           </ActionIcon>
         }
+
+        <ActionIcon color="dark" onClick={() => { pause(); changeState(); }}>
+          <IconPlayerStop />
+        </ActionIcon>
         <ActionIcon
           color="dark"
           onClick={() => {
@@ -44,7 +48,7 @@ const BreakTimer = ({ changeState, expiryTimestamp, clock }) => {
             time.setSeconds(time.getSeconds() + clock);
             restart(time)
           }}>
-            <IconArrowBackUp />
+            <IconReload />
         </ActionIcon>
       </Group>
     </div>

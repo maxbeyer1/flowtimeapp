@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { Flex, Title } from "@mantine/core";
+import { Flex, Paper, Title } from "@mantine/core";
+import { MantineProvider, ColorSchemeProvider } from '@mantine/core';
+import { useColorScheme } from "@mantine/hooks";
+import '@fontsource-variable/roboto-mono';
 
 import WorkStopwatch from "./components/WorkStopwatch";
 import BreakTimer from "./components/BreakTimer";
@@ -19,26 +22,63 @@ const App = () => {
   const time = new Date();
   time.setSeconds(time.getSeconds() + (workingSeconds / breakDivisor)); // timer amount
 
+  // hooks for color scheme
+  // defaults to user's system preferred color scheme
+  // or light mode if not supported
+  const preferredColorScheme = useColorScheme();
+  const [colorScheme, setColorScheme] = useState(preferredColorScheme);
+  const toggleColorScheme = () => {
+    setColorScheme(colorScheme === 'light' ? 'dark' : 'light');
+  };
+
+  // update color scheme when user changes system preference
+  useEffect(() => {
+    setColorScheme(preferredColorScheme);
+  }, [preferredColorScheme]);
+
   return (
-    <Flex justify="center" align="center" direction="column" style={{ height: '100%' }}>
-      {/* Header */}
-      <Flex justify="center" align="center">
-        { isWorking
-          ? <Title pos="absolute" order={2}>WORK</Title>
-          : <Title pos="absolute" order={2}>BREAK</Title>
-        }
-        <SettingsModal updateSettings={setBreakDivisor} />
-      </Flex>
-      {/* Clock */}
-      { isWorking
-        ? <WorkStopwatch changeState={handleWorkingState} /> // pass function to child
-        : <BreakTimer 
-            changeState={handleWorkingState} // pass function to chid
-            expiryTimestamp={time} 
-            clock={workingSeconds / breakDivisor} // timer amount
-          /> 
-      } 
-    </Flex>
+    <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+      <MantineProvider 
+        withGlobalStyles 
+        withNormalizeCSS
+        theme={{
+          colorScheme,
+          fontFamily: 'Roboto Mono Variable', // need new font for headers
+        }} 
+      >
+        <Flex justify="center" align="center" direction="column" style={{ height: '100%' }}>
+          <Paper 
+            style={{
+             backgroundColor: colorScheme === 'light' ? '#fafafa' : '#191a1c'
+            }}  
+            shadow="xl" 
+            radius="lg" 
+            p="xl"
+          >
+            {/* Header */}
+            <Flex 
+              justify="center" 
+              align="center"
+            >
+              { isWorking
+                ? <Title pos="absolute" order={2}>WORK</Title>
+                : <Title pos="absolute" order={2}>BREAK</Title>
+              }
+              <SettingsModal updateSettings={setBreakDivisor} />
+            </Flex>
+            {/* Clock */}
+            { isWorking
+              ? <WorkStopwatch changeState={handleWorkingState} /> // pass function to child
+              : <BreakTimer 
+                  changeState={handleWorkingState} // pass function to chid
+                  expiryTimestamp={time} 
+                  clock={workingSeconds / breakDivisor} // timer amount
+                /> 
+            } 
+          </Paper>
+        </Flex>
+      </MantineProvider>
+    </ColorSchemeProvider>
   );
 };
 
