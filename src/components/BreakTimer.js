@@ -1,7 +1,9 @@
 import React from "react";
 
-import { Group, Button, Title } from "@mantine/core";
+import { Group, ActionIcon } from "@mantine/core";
 import { useTimer } from "react-timer-hook";
+import { IconArrowBackUp, IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react";
+
 import TimeDisplay from "./TimeDisplay";
 
 const BreakTimer = ({ changeState, expiryTimestamp, clock }) => {
@@ -19,27 +21,31 @@ const BreakTimer = ({ changeState, expiryTimestamp, clock }) => {
   } = useTimer({ expiryTimestamp, autoStart: false, onExpire: () => changeState() });
 
   return (
-    <div style={{textAlign: 'center'}}>
-      <Title order={2}>Timer</Title>
+    <div style={{ textAlign: 'center' }}>
       <TimeDisplay
         hours={hours} 
         minutes={minutes} 
         seconds={seconds} 
       />
-      <p>{isRunning ? 'Running' : 'Not running'}</p>
       <Group position="center" spacing="xs">
-        <Button variant="outline" onClick={resume}>Start</Button>
-        <Button variant="outline" onClick={pause}>Pause</Button>
-        <Button
-          variant="outline" 
+        { isRunning // play/pause buttons
+          ? <ActionIcon color="dark" onClick={pause}> 
+              <IconPlayerPause /> 
+            </ActionIcon>
+          : <ActionIcon color="dark" onClick={start}>
+              <IconPlayerPlay />
+          </ActionIcon>
+        }
+        <ActionIcon
+          color="dark"
           onClick={() => {
             // Restarts to original timer
             const time = new Date();
             time.setSeconds(time.getSeconds() + clock);
             restart(time)
           }}>
-            Restart
-        </Button>
+            <IconArrowBackUp />
+        </ActionIcon>
       </Group>
     </div>
   );

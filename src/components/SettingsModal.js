@@ -1,8 +1,10 @@
 import React from "react";
 
 import { useDisclosure, useInputState } from '@mantine/hooks';
-import { Modal, Button, NumberInput, Group, createStyles } from '@mantine/core';
+import { Modal, Button, NumberInput, Group, createStyles, ActionIcon } from '@mantine/core';
+import { IconSettings } from "@tabler/icons-react";
 
+// CSS classes
 const useStyles = createStyles((theme) => ({
   content: {
     borderRadius: '12px',
@@ -21,7 +23,7 @@ const SettingsModal = ({ updateSettings }) => {
   const { classes } = useStyles();
 
   return (
-    <>
+    <Group>
       <Modal 
         opened={opened} 
         onClose={close} 
@@ -32,6 +34,7 @@ const SettingsModal = ({ updateSettings }) => {
         }} 
         centered
       >
+        {/* Break Divisor Input */}
         <NumberInput
           value={divisorValue}
           onChange={setDivisorValue}
@@ -41,6 +44,7 @@ const SettingsModal = ({ updateSettings }) => {
           hideControls
         />
 
+        {/* Modal Buttons */}
         <Group position="right" mt="md">
           <Button 
             variant="default" 
@@ -54,9 +58,12 @@ const SettingsModal = ({ updateSettings }) => {
           </Button>
         </Group>
       </Modal>
-
-      <Button onClick={open}>Open modal</Button>
-    </>
+      
+      {/* Open Button */}
+      <ActionIcon color="dark" ml="22em" variant="subtle" onClick={open}>
+        <IconSettings size="1.5rem" />
+      </ActionIcon> 
+    </Group>
   );
 };
 

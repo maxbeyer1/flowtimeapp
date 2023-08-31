@@ -1,5 +1,7 @@
 import React from "react";
 
+// Receives the hours, minutes and seconds from the parent component
+// and displays them in a nice format
 const TimeDisplay = ({ hours, minutes, seconds }) => {
   return (
     <div style={{ fontSize: '100px' }}>

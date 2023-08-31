@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { Flex, Title } from "@mantine/core";
+
 import WorkStopwatch from "./components/WorkStopwatch";
 import BreakTimer from "./components/BreakTimer";
 import SettingsModal from "./components/SettingsModal";
@@ -18,19 +20,25 @@ const App = () => {
   time.setSeconds(time.getSeconds() + (workingSeconds / breakDivisor)); // timer amount
 
   return (
-    <div>
-      <SettingsModal updateSettings={setBreakDivisor} />
-      <div>
-      { isWorking 
+    <Flex justify="center" align="center" direction="column" style={{ height: '100%' }}>
+      {/* Header */}
+      <Flex justify="center" align="center">
+        { isWorking
+          ? <Title pos="absolute" order={2}>WORK</Title>
+          : <Title pos="absolute" order={2}>BREAK</Title>
+        }
+        <SettingsModal updateSettings={setBreakDivisor} />
+      </Flex>
+      {/* Clock */}
+      { isWorking
         ? <WorkStopwatch changeState={handleWorkingState} /> // pass function to child
         : <BreakTimer 
             changeState={handleWorkingState} // pass function to chid
             expiryTimestamp={time} 
             clock={workingSeconds / breakDivisor} // timer amount
           /> 
-      }
-    </div>
-    </div>
+      } 
+    </Flex>
   );
 };
 

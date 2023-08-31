@@ -1,7 +1,9 @@
 import React from "react";
 
-import { Button, Group, Title } from "@mantine/core";
+import { ActionIcon, Group } from "@mantine/core";
 import { useStopwatch } from "react-timer-hook";
+import { IconArrowBackUp, IconPlayerPause, IconPlayerPlay, IconPlayerStop } from "@tabler/icons-react";
+
 import TimeDisplay from "./TimeDisplay";
 
 const WorkStopwatch = ({ changeState }) => {
@@ -18,19 +20,27 @@ const WorkStopwatch = ({ changeState }) => {
   } = useStopwatch({ autoStart: false });
 
   return (
-    <div style={{textAlign: 'center'}}>
-      <Title order={2}>Stopwatch</Title>
+    <div style={{ textAlign: 'center',  }}>
       <TimeDisplay
         hours={hours} 
         minutes={minutes} 
         seconds={seconds} 
       />
-      <p>{isRunning ? 'Running' : 'Not running'}</p>
       <Group position="center" spacing="xs">
-        <Button variant="outline" onClick={start}>Start</Button>
-        <Button variant="outline" onClick={pause}>Pause</Button>
-        <Button variant="outline" onClick={() => { pause(); changeState(totalSeconds); }}>Stop</Button>
-        <Button variant="outline" onClick={reset}>Reset</Button>
+        { isRunning // play/pause buttons
+          ? <ActionIcon color="dark" onClick={pause}> 
+              <IconPlayerPause /> 
+            </ActionIcon>
+          : <ActionIcon color="dark" onClick={start}>
+              <IconPlayerPlay />
+          </ActionIcon>
+        }
+        <ActionIcon color="dark" onClick={() => { pause(); changeState(totalSeconds); }}>
+          <IconPlayerStop />
+        </ActionIcon>
+        <ActionIcon color="dark" onClick={reset}>
+          <IconArrowBackUp />
+        </ActionIcon>
       </Group>
     </div>
   );
