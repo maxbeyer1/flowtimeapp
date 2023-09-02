@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { useDisclosure, useInputState } from '@mantine/hooks';
 import { Modal, Button, NumberInput, Group, createStyles, ActionIcon, Switch, useMantineTheme, useMantineColorScheme } from '@mantine/core';
@@ -22,7 +22,6 @@ const SettingsModal = ({ updateSettings }) => {
   // States for modal and inputs
   const [opened, { open, close }] = useDisclosure(false);
   const [divisorValue, setDivisorValue] = useInputState(5);
-  // const [themeChecked, setThemeChecked] = useState(false);
 
   // CSS classes
   const { classes } = useStyles();

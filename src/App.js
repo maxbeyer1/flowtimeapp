@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Flex, Paper, Title } from "@mantine/core";
+import { Flex, Paper, Title, Box } from "@mantine/core";
 import { MantineProvider, ColorSchemeProvider } from '@mantine/core';
 import { useColorScheme } from "@mantine/hooks";
 import '@fontsource-variable/roboto-mono';
@@ -29,6 +29,7 @@ const App = () => {
   const [colorScheme, setColorScheme] = useState(preferredColorScheme);
   const toggleColorScheme = () => {
     setColorScheme(colorScheme === 'light' ? 'dark' : 'light');
+    document.body.style.backgroundColor = colorScheme === 'light' ? '#1a1b1e' : '#f0f0f2';
   };
 
   // update color scheme when user changes system preference
@@ -47,13 +48,30 @@ const App = () => {
         }} 
       >
         <Flex justify="center" align="center" direction="column" style={{ height: '100%' }}>
-          <Paper 
+          {/* <Paper 
             style={{
              backgroundColor: colorScheme === 'light' ? '#fafafa' : '#191a1c'
             }}  
             shadow="xl" 
             radius="lg" 
             p="xl"
+          > */}
+            
+          {/* </Paper> */}
+
+          <Box 
+            sx={(theme) => ({
+              backgroundColor: colorScheme === 'light' ? '#f0f0f2' : '#1a1b1e',
+              outline: '0',
+              display: 'block',
+              boxSizing: 'border-box',
+              borderRadius: theme.radius.lg,
+              padding: '2rem',
+              // neumorphic box shadow
+              boxShadow: colorScheme === 'light' ? 
+                '20px 20px 40px #d3d3d5, -20px -20px 40px #ffffff' :
+                '20px 20px 40px #131415, -20px -20px 40px #1f2123',
+            })}
           >
             {/* Header */}
             <Flex 
@@ -75,7 +93,7 @@ const App = () => {
                   clock={workingSeconds / breakDivisor} // timer amount
                 /> 
             } 
-          </Paper>
+          </Box>
         </Flex>
       </MantineProvider>
     </ColorSchemeProvider>
