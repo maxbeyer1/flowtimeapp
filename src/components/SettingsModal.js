@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useDisclosure, useInputState } from '@mantine/hooks';
 import { Modal, Button, NumberInput, Group, createStyles, ActionIcon, Switch, useMantineTheme, useMantineColorScheme } from '@mantine/core';
@@ -18,15 +18,19 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const SettingsModal = ({ updateSettings }) => {
+const SettingsModal = ({ updateSettings, divisor, changeColorSetting }) => {
   // States for modal and inputs
   const [opened, { open, close }] = useDisclosure(false);
-  const [divisorValue, setDivisorValue] = useInputState(5);
+  const [divisorValue, setDivisorValue] = useInputState(divisor);
+  
+  useEffect(() => {
+    setDivisorValue(Number(divisor));
+  }, [divisor]);
 
   // CSS classes
   const { classes } = useStyles();
 
-  // Theme and color scheme
+  // Theme and color scheme hooks
   const theme = useMantineTheme();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
@@ -76,7 +80,11 @@ const SettingsModal = ({ updateSettings }) => {
           </Button>
           <Button 
             variant="outline"
-            onClick={() => { close(); updateSettings(divisorValue); }}>
+            onClick={() => { 
+              close(); 
+              updateSettings(divisorValue); 
+              changeColorSetting(colorScheme);
+          }}>
               Save changes
           </Button>
         </Group>

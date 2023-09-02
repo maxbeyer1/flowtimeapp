@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 
-import { Flex, Paper, Title, Box } from "@mantine/core";
+import { Flex, Title, Box } from "@mantine/core";
 import { MantineProvider, ColorSchemeProvider } from '@mantine/core';
-import { useColorScheme } from "@mantine/hooks";
+import { useColorScheme, useLocalStorage } from "@mantine/hooks";
 import '@fontsource-variable/roboto-mono';
 
 import WorkStopwatch from "./components/WorkStopwatch";
 import BreakTimer from "./components/BreakTimer";
 import SettingsModal from "./components/SettingsModal";
+import AppHeader from "./components/AppHeader";
 
 const App = () => {
+  // hooks for timer
   const [isWorking, setWorking] = useState(true);
   const [workingSeconds, setWorkingSeconds] = useState(0);
-  const [breakDivisor, setBreakDivisor] = useState(5);
+  const [breakDivisor, setBreakDivisor] = useLocalStorage({key: 'break-divisor', defaultValue: 5});
 
   const handleWorkingState = ( workingSeconds ) => {
     setWorking(isWorking => !isWorking);
@@ -26,16 +28,33 @@ const App = () => {
   // defaults to user's system preferred color scheme
   // or light mode if not supported
   const preferredColorScheme = useColorScheme();
-  const [colorScheme, setColorScheme] = useState(preferredColorScheme);
+  const [colorSchemeSetting, setColorSchemeSetting] = useLocalStorage({
+    key: 'color-scheme', defaultValue: ''
+  });
+  
+  const [colorScheme, setColorScheme] = useState(
+    colorSchemeSetting ? colorSchemeSetting : preferredColorScheme
+  );
+
+  // const [colorScheme, setColorScheme] = useLocalStorage('color-scheme', preferredColorScheme);
   const toggleColorScheme = () => {
     setColorScheme(colorScheme === 'light' ? 'dark' : 'light');
-    document.body.style.backgroundColor = colorScheme === 'light' ? '#1a1b1e' : '#f0f0f2';
+    document.body.style.backgroundColor = colorScheme === 'light' ? '#f0f0f2' : '#1a1b1e';
   };
+
+  useEffect(() => {
+    if (colorSchemeSetting) setColorScheme(colorSchemeSetting);
+  }, [colorSchemeSetting]);
 
   // update color scheme when user changes system preference
   useEffect(() => {
-    setColorScheme(preferredColorScheme);
+    if (!colorSchemeSetting) setColorScheme(preferredColorScheme);
   }, [preferredColorScheme]);
+
+  // override default body background color for neumorphic design
+  useEffect(() => {
+    document.body.style.backgroundColor = colorScheme === 'light' ? '#f0f0f2' : '#1a1b1e';
+  }, [colorScheme]);
 
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
@@ -59,6 +78,14 @@ const App = () => {
             
           {/* </Paper> */}
 
+          {/* Header */}
+          <Box sx={(theme) => ({
+            position: 'absolute',
+            top: '1rem',
+            width: '32rem'
+          })}>
+            <AppHeader />
+          </Box>
           <Box 
             sx={(theme) => ({
               backgroundColor: colorScheme === 'light' ? '#f0f0f2' : '#1a1b1e',
@@ -69,8 +96,8 @@ const App = () => {
               padding: '2rem',
               // neumorphic box shadow
               boxShadow: colorScheme === 'light' ? 
-                '20px 20px 40px #d3d3d5, -20px -20px 40px #ffffff' :
-                '20px 20px 40px #131415, -20px -20px 40px #1f2123',
+                '15px 15px 30px #d3d3d5, -15px -15px 30px #ffffff' :
+                '15px 15px 30px #131415, -15px -15px 30px #1f2123',
             })}
           >
             {/* Header */}
@@ -82,7 +109,11 @@ const App = () => {
                 ? <Title pos="absolute" order={2}>WORK</Title>
                 : <Title pos="absolute" order={2}>BREAK</Title>
               }
-              <SettingsModal updateSettings={setBreakDivisor} />
+              <SettingsModal
+                updateSettings={setBreakDivisor}
+                divisor={breakDivisor}
+                changeColorSetting={setColorSchemeSetting} 
+              />
             </Flex>
             {/* Clock */}
             { isWorking
