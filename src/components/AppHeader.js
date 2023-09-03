@@ -2,6 +2,7 @@ import React from "react";
 
 import { Flex, Title, createStyles, rem } from "@mantine/core";
 import AuthModal from "./AuthModal";
+import AccountModal from "./AccountModal";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -26,15 +27,16 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const AppHeader = () => {
+const AppHeader = ({ session }) => {
   const { classes } = useStyles();
 
   return (
     <Flex justify="left" align="center">
       <Title order={3}>FLOWTIME</Title>
       <Title className={classes.link} component="a" href="#" order={4} ml="15rem">STATS</Title>
-      <Title className={classes.link} component="a" href="#" order={4} ml="2rem">ACCOUNT</Title>
-      <AuthModal />
+      {/* <Title className={classes.link} component="a" href="#" order={4} ml="2rem">ACCOUNT</Title> */}
+      
+      {!session ? <AuthModal /> : <AccountModal key={session.user.id} session={session} />}
     </Flex>
   );
 }

@@ -10,6 +10,8 @@ import BreakTimer from "./components/BreakTimer";
 import SettingsModal from "./components/SettingsModal";
 import AppHeader from "./components/AppHeader";
 
+import { supabase } from './supabaseClient';
+
 const App = () => {
   // hooks for timer
   const [isWorking, setWorking] = useState(true);
@@ -56,6 +58,23 @@ const App = () => {
     document.body.style.backgroundColor = colorScheme === 'light' ? '#f0f0f2' : '#1a1b1e';
   }, [colorScheme]);
 
+  const [session, setSession] = useState(null)
+
+  // subscribe to auth changes
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
       <MantineProvider 
@@ -84,7 +103,7 @@ const App = () => {
             top: '1rem',
             width: '32rem'
           })}>
-            <AppHeader />
+            <AppHeader session={session} />
           </Box>
           <Box 
             sx={(theme) => ({

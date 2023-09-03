@@ -39,7 +39,7 @@ const SettingsModal = ({ updateSettings, divisor, changeColorSetting }) => {
       <Modal 
         opened={opened} 
         onClose={close} 
-        title="Settings" 
+        title="SETTINGS" 
         classNames={{ 
           content: classes.content,
           title: classes.title, 
