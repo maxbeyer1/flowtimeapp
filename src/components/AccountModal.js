@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-import { Modal, Title, Button, createStyles, rem } from '@mantine/core';
+import { Modal, Title, Button, TextInput, Group, Flex, createStyles, rem, Avatar, ActionIcon } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { IconEdit } from "@tabler/icons-react";
 
 import { supabase } from "../supabaseClient";
+import EmailChangeModal from "./EmailChangeModal";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -26,45 +28,81 @@ const useStyles = createStyles((theme) => ({
       opacity: 1,
     },
   },
+  content: {
+    borderRadius: '12px',
+  },
+  title: {
+    fontWeight: 600,
+  },
 }));
 
+// Modal for viewing and editing account information
 const AccountModal = ({ session }) => {
   const { classes } = useStyles();
   const [opened, { open, close }] = useDisclosure(false);
-
-  const [email, setEmail] = useState(null);
-
-  // get profile data
-  useEffect(() => {
-    async function getProfile() {
-      const { user } = session;
-
-      let { data, error } = await supabase
-        .from('profiles')
-        .select(`email`)
-        .eq('id', user.id)
-        .single();
-
-      if (error) {
-        console.warn(error);
-      } else if (data) {
-        setEmail(data.email);
-      }
-    }
-
-    getProfile();
-  }, [session]);
+  const { user } = session;
 
   return (
     <>
-      <Modal opened={opened} onClose={close} title="ACCOUNT">
+      <Modal 
+        opened={opened} 
+        onClose={close} 
+        title="ACCOUNT"
+        classNames={{ 
+          content: classes.content,
+          title: classes.title, 
+        }}
+      >
         <div>
-          <p>Email: {email}</p>
-          <Button 
-            onClick={() => { supabase.auth.signOut(); close(); }}
-          >
-            Sign Out
-          </Button>
+          <Flex pb={12} align="center">
+            <Avatar radius="lg" size="md"/>
+            <Title 
+              pl={12} 
+              order={3} 
+              style={{ fontWeight: '500', fontSize: '1.25rem' }}
+            >
+              Flowtime User
+            </Title>
+          </Flex>
+          <TextInput 
+            disabled
+            readOnly
+            label="Email" 
+            value={user.email}
+            radius="md"
+            variant="filled"
+            pb={8} 
+            rightSection={
+              <EmailChangeModal />
+            }
+            rightSectionProps={{ style: { display: 'flex' } }} // fix for icon not showing
+          />
+          <TextInput 
+            disabled
+            readOnly
+            label="Password" 
+            value="********"
+            type="password"
+            radius="md"
+            variant="filled"
+            pb={8} 
+            rightSection={
+              <ActionIcon variant="transparent" color="dark" size="sm">
+                <IconEdit />
+              </ActionIcon>
+            }
+            rightSectionProps={{ style: { display: 'flex' } }} // fix for icon not showing
+          />
+          <Group position="center">
+            <Button 
+              onClick={() => { supabase.auth.signOut(); close(); }}
+              mt={16}
+              variant="outline"
+              color="red"
+            >
+              Sign Out
+            </Button>
+          </Group>
         </div>
       </Modal>
 

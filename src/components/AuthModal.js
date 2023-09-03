@@ -30,6 +30,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
+// Modal for logging in and signing up
 const AuthModal = () => {
   const { classes } = useStyles();
   const [opened, { open, close }] = useDisclosure(false);
