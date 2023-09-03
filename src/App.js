@@ -100,7 +100,6 @@ const App = () => {
                 '15px 15px 30px #131415, -15px -15px 30px #1f2123',
             })}
           >
-            {/* Header */}
             <Flex 
               justify="center" 
               align="center"

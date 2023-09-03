@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Flex, Title, createStyles, rem } from "@mantine/core";
+import AuthModal from "./AuthModal";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -33,6 +34,7 @@ const AppHeader = () => {
       <Title order={3}>FLOWTIME</Title>
       <Title className={classes.link} component="a" href="#" order={4} ml="15rem">STATS</Title>
       <Title className={classes.link} component="a" href="#" order={4} ml="2rem">ACCOUNT</Title>
+      <AuthModal />
     </Flex>
   );
 }
