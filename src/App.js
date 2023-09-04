@@ -26,19 +26,56 @@ const App = () => {
   const time = new Date();
   time.setSeconds(time.getSeconds() + (workingSeconds / breakDivisor)); // timer amount
 
+  const [session, setSession] = useState(null)
+
+  // subscribe to auth changes
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  async function getSettings() {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('settings')
+      .eq('id', session.user.id)
+
+    if (error) {
+      console.log(error);
+    } else {
+      setBreakDivisor(data[0].settings[0].breakDivisor);
+      setColorSchemeSetting(data[0].settings[0].colorScheme);
+    }
+  }
+
+  if (session) getSettings();
+
   // hooks for color scheme
   // defaults to user's system preferred color scheme
   // or light mode if not supported
+  // preferredColorScheme --> user's system preferred color scheme
   const preferredColorScheme = useColorScheme();
-  const [colorSchemeSetting, setColorSchemeSetting] = useLocalStorage({
-    key: 'color-scheme', defaultValue: ''
-  });
-  
+  // const [colorSchemeSetting, setColorSchemeSetting] = useLocalStorage({
+  //   key: 'color-scheme', defaultValue: ''
+  // });
+  // colorSchemeSetting --> setting in Supabase
+  const [colorSchemeSetting, setColorSchemeSetting] = useState('');
+  // colorScheme --> current color scheme
+  // if colorSchemeSetting is set, use that
+  // otherwise, use preferredColorScheme
   const [colorScheme, setColorScheme] = useState(
     colorSchemeSetting ? colorSchemeSetting : preferredColorScheme
   );
 
-  // const [colorScheme, setColorScheme] = useLocalStorage('color-scheme', preferredColorScheme);
   const toggleColorScheme = () => {
     setColorScheme(colorScheme === 'light' ? 'dark' : 'light');
     document.body.style.backgroundColor = colorScheme === 'light' ? '#f0f0f2' : '#1a1b1e';
@@ -58,23 +95,6 @@ const App = () => {
     document.body.style.backgroundColor = colorScheme === 'light' ? '#f0f0f2' : '#1a1b1e';
   }, [colorScheme]);
 
-  const [session, setSession] = useState(null)
-
-  // subscribe to auth changes
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-    })
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-    })
-
-    return () => subscription.unsubscribe()
-  }, [])
-
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
       <MantineProvider 
@@ -86,17 +106,6 @@ const App = () => {
         }} 
       >
         <Flex justify="center" align="center" direction="column" style={{ height: '100%' }}>
-          {/* <Paper 
-            style={{
-             backgroundColor: colorScheme === 'light' ? '#fafafa' : '#191a1c'
-            }}  
-            shadow="xl" 
-            radius="lg" 
-            p="xl"
-          > */}
-            
-          {/* </Paper> */}
-
           {/* Header */}
           <Box sx={(theme) => ({
             position: 'absolute',
@@ -128,9 +137,10 @@ const App = () => {
                 : <Title pos="absolute" order={2}>BREAK</Title>
               }
               <SettingsModal
-                updateSettings={setBreakDivisor}
+                updateDivisor={setBreakDivisor}
                 divisor={breakDivisor}
                 changeColorSetting={setColorSchemeSetting} 
+                session={session}
               />
             </Flex>
             {/* Clock */}

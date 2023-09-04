@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useDisclosure, useInputState } from '@mantine/hooks';
 import { Modal, Button, NumberInput, Group, createStyles, ActionIcon, Switch, useMantineTheme, useMantineColorScheme } from '@mantine/core';
 import { IconMoonStars, IconSettings, IconSun } from "@tabler/icons-react";
+import { supabase } from "../supabaseClient";
 
 // CSS classes
 const useStyles = createStyles((theme) => ({
@@ -18,11 +19,12 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const SettingsModal = ({ updateSettings, divisor, changeColorSetting }) => {
+const SettingsModal = ({ updateDivisor, divisor, changeColorSetting, session }) => {
   // States for modal and inputs
   const [opened, { open, close }] = useDisclosure(false);
   const [divisorValue, setDivisorValue] = useInputState(divisor);
   
+  // Allows for current divisor to be input placeholder
   useEffect(() => {
     setDivisorValue(Number(divisor));
   }, [divisor]);
@@ -33,6 +35,19 @@ const SettingsModal = ({ updateSettings, divisor, changeColorSetting }) => {
   // Theme and color scheme hooks
   const theme = useMantineTheme();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+
+  async function updateSettings(divisor, scheme) {
+    const { data, error } = await supabase
+      .from('profiles')
+      .update({ settings: [{ breakDivisor: divisor, colorScheme: scheme }] })
+      .eq('id', session.user.id)
+
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(data);
+    }
+  }
 
   return (
     <Group>
@@ -82,8 +97,9 @@ const SettingsModal = ({ updateSettings, divisor, changeColorSetting }) => {
             variant="outline"
             onClick={() => { 
               close(); 
-              updateSettings(divisorValue); 
+              updateDivisor(divisorValue); 
               changeColorSetting(colorScheme);
+              updateSettings(divisorValue, colorScheme);
           }}>
               Save changes
           </Button>
