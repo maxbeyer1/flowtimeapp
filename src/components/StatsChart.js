@@ -35,13 +35,24 @@ const StatsChart = ({ data }) => {
     return shortenedData;
   }
 
+  // convert seconds to hours in data for chart
+  const secondsToHoursDurations = (data) => {
+    const formattedData = data.map((item) => {
+      const hours = item.totalLength / 3600;
+      return { date: item.date, totalLength: hours };
+    });
+    
+    return formattedData;
+  }
+
   const filledData = fillMissingDates(data);
   const shortenedData = shortenDates(filledData);
+  const formattedData = secondsToHoursDurations(shortenedData);
 
   return (
     // <ResponsiveContainer width="100%" height="100%">
     <Flex justify="center">
-      <BarChart width={300} height={150} data={shortenedData}>
+      <BarChart width={300} height={150} data={formattedData}>
         <XAxis dataKey="date" />
         <Bar dataKey="totalLength" fill="#8884d8" />
         <Tooltip content={<CustomTooltip />} cursor={{ fill: "transparent" }} />

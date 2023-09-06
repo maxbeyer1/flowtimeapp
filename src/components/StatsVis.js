@@ -1,20 +1,12 @@
 import React from "react";
 
-import { Title } from "@mantine/core";
+import { Flex, Title, Text } from "@mantine/core";
+
 import StatsChart from "./StatsChart";
 
-const Statistics = ({ historyData }) => {
+// TODO: new component name this is stupid
+const StatsVis = ({ historyData }) => {
   const groupByDate = (data) => {
-    // const grouped = data.reduce((acc, item) => {
-    //   const date = item.created_at.split('T')[0];
-    //   if (!acc[date]) {
-    //     acc[date] = [];
-    //   }
-
-    //   acc[date].push(item);
-    //   return acc;
-    // }, {});
-    
     // group by date with name of day
     const grouped = data.reduce((acc, item) => {
       const date = new Date(item.created_at).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -29,8 +21,6 @@ const Statistics = ({ historyData }) => {
     return grouped;
   }
   
-  console.log(groupByDate(historyData));
-
   const calculateLengthPerDay = (groupedData) => {
     const lengthPerDay = Object.keys(groupedData).map((date) => {
       const totalLength = groupedData[date].reduce((acc, item) => {
@@ -43,13 +33,14 @@ const Statistics = ({ historyData }) => {
     return lengthPerDay;
   }
 
-  console.log(calculateLengthPerDay(groupByDate(historyData)));
-
   const dailyData = calculateLengthPerDay(groupByDate(historyData));
 
   return (
-    <StatsChart data={dailyData} />
+    <Flex justify="center" align="center" direction="column">
+      <Text size="xl" weight="500" mb="0.5rem">THIS WEEK</Text>
+      <StatsChart data={dailyData} />
+    </Flex>
   );
 }
 
-export default Statistics;
+export default StatsVis;

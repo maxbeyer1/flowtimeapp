@@ -59,7 +59,7 @@ const SettingsModal = ({ updateDivisor, divisor, changeColorSetting, session }) 
           content: classes.content,
           title: classes.title, 
         }} 
-        centered
+        // centered
       >
         {/* Break Divisor Input */}
         <NumberInput

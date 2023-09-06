@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-import { Modal, Table, Title, createStyles, rem } from "@mantine/core";
+import { Modal, Title, createStyles, rem } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 
 import { supabase } from "../supabaseClient";
-import { formatTimestamp } from "../utils/formatTimestamp";
-import { formatDuration } from "../utils/formatDuration";
-import Statistics from "./Statistics";
+import StatsVis from "./StatsVis";
+import StatsTable from "./StatsTable";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -65,20 +64,6 @@ const StatsModal = ({ session }) => {
   useEffect(() => {
     if (session) getSettings();
   }, [session, opened]);
-  
-  let historyRows;
-  // if historyData is not null, map it to table rows
-  if (historyData) {
-    historyRows = historyData.map((row) => (
-      <tr key={row.created_at}>
-        <td>{formatTimestamp(row.created_at)}</td>
-        {/* <td>{row.working.toString()}</td> */}
-        <td>{formatDuration(row.length)}</td>
-      </tr>
-    ));
-  } else {
-    historyRows = null;
-  }
 
   return (
     <>
@@ -91,19 +76,8 @@ const StatsModal = ({ session }) => {
           title: classes.title, 
         }}
       >
-        <Statistics historyData={historyData} />
-        <Table>
-          <thead>
-            <tr>
-              <th>DATE</th>
-              {/* <th>WORKING</th> */}
-              <th>LENGTH</th>
-            </tr>
-          </thead>
-          <tbody>
-            {historyRows}
-          </tbody>
-        </Table>
+        <StatsVis historyData={historyData} />
+        <StatsTable historyData={historyData} />
       </Modal>
 
       <Title 
