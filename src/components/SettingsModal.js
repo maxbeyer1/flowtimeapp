@@ -45,7 +45,7 @@ const SettingsModal = ({ updateDivisor, divisor, changeColorSetting, session }) 
     if (error) {
       console.log(error);
     } else {
-      console.log(data);
+      console.log('settings updated');
     }
   }
 

@@ -5,8 +5,9 @@ import { useStopwatch } from "react-timer-hook";
 import { IconReload, IconPlayerPause, IconPlayerPlay, IconPlayerStop } from "@tabler/icons-react";
 
 import TimeDisplay from "./TimeDisplay";
+import { supabase } from "../supabaseClient";
 
-const WorkStopwatch = ({ changeState }) => {
+const WorkStopwatch = ({ changeState, session }) => {
   const {
     totalSeconds,
     seconds,
@@ -18,6 +19,29 @@ const WorkStopwatch = ({ changeState }) => {
     pause,
     reset,
   } = useStopwatch({ autoStart: false });
+
+  async function recordHistory() {
+    const { error } = await supabase
+      .from('history')
+      .insert({
+        user_id: session.user.id, 
+        created_at: new Date(), 
+        length: totalSeconds,
+        working: true, 
+      })
+
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('history updated');
+    }
+  }
+
+  const endStopwatch = () => {
+    pause();
+    changeState(totalSeconds);
+    recordHistory();
+  }
 
   return (
     <div style={{ textAlign: 'center',  }}>
@@ -35,7 +59,7 @@ const WorkStopwatch = ({ changeState }) => {
               <IconPlayerPlay />
           </ActionIcon>
         }
-        <ActionIcon color="dark" onClick={() => { pause(); changeState(totalSeconds); }}>
+        <ActionIcon color="dark" onClick={endStopwatch}>
           <IconPlayerStop />
         </ActionIcon>
         <ActionIcon color="dark" onClick={reset}>

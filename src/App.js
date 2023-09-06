@@ -51,9 +51,11 @@ const App = () => {
 
     if (error) {
       console.log(error);
-    } else {
+    } else if (data[0].settings) {
       setBreakDivisor(data[0].settings[0].breakDivisor);
       setColorSchemeSetting(data[0].settings[0].colorScheme);
+    } else {
+      console.log('no data');
     }
   }
 
@@ -81,6 +83,7 @@ const App = () => {
     document.body.style.backgroundColor = colorScheme === 'light' ? '#f0f0f2' : '#1a1b1e';
   };
 
+  // this seems unnecessary...
   useEffect(() => {
     if (colorSchemeSetting) setColorScheme(colorSchemeSetting);
   }, [colorSchemeSetting]);
@@ -145,7 +148,10 @@ const App = () => {
             </Flex>
             {/* Clock */}
             { isWorking
-              ? <WorkStopwatch changeState={handleWorkingState} /> // pass function to child
+              ? <WorkStopwatch 
+                  changeState={handleWorkingState} // pass function to child
+                  session={session}
+                /> 
               : <BreakTimer 
                   changeState={handleWorkingState} // pass function to chid
                   expiryTimestamp={time} 
