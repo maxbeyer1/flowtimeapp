@@ -4,6 +4,9 @@ import { Modal, Table, Title, createStyles, rem } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 
 import { supabase } from "../supabaseClient";
+import { formatTimestamp } from "../utils/formatTimestamp";
+import { formatDuration } from "../utils/formatDuration";
+import Statistics from "./Statistics";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -62,26 +65,6 @@ const StatsModal = ({ session }) => {
   useEffect(() => {
     if (session) getSettings();
   }, [session, opened]);
-
-  // make timestamp more readable
-  const formatTimestamp = (timestamp) => {
-    const date = new Date(timestamp);
-    return new Intl.DateTimeFormat('en-US', {
-      year: 'numeric', 
-      month: '2-digit',
-      day: '2-digit', 
-      hour: '2-digit', 
-      minute: '2-digit', 
-      second: '2-digit'
-    }).format(date);
-  }
-  
-  // make duration more readable
-  const formatDuration = (duration) => {
-    let date = new Date(0);
-    date.setSeconds(duration);
-    return date.toISOString().substring(11, 19);
-  }
   
   let historyRows;
   // if historyData is not null, map it to table rows
@@ -108,6 +91,7 @@ const StatsModal = ({ session }) => {
           title: classes.title, 
         }}
       >
+        <Statistics historyData={historyData} />
         <Table>
           <thead>
             <tr>
