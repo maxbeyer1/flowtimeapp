@@ -58,6 +58,7 @@ const AuthModal = () => {
     if (session) {
       close();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
   return (
