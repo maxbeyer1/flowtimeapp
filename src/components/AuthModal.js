@@ -69,6 +69,7 @@ const AuthModal = () => {
           supabaseClient={supabase}
           appearance={{ theme: ThemeSupa }}
           theme={theme.colorScheme === 'dark' ? 'dark' : 'light'}
+          providers={['google']}
         />
       </Modal>
 
