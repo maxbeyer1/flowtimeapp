@@ -90,6 +90,7 @@ const App = () => {
   // update color scheme when user changes system preference
   useEffect(() => {
     if (!colorSchemeSetting) setColorScheme(preferredColorScheme);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [preferredColorScheme]);
 
   // override default body background color for neumorphic design
