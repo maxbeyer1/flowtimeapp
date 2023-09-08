@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Modal, Title, createStyles, rem } from "@mantine/core";
+import { Modal, Title, Text, Group, createStyles, rem } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 
 import { supabase } from "../supabaseClient";
@@ -77,8 +77,13 @@ const StatsModal = ({ session }) => {
           title: classes.title, 
         }}
       >
-        <StatsVis historyData={historyData} />
-        <StatsTable historyData={historyData} />
+        {historyData ?
+          <Group>
+            <StatsVis historyData={historyData} />
+            <StatsTable historyData={historyData} />
+          </Group> :
+          <Text align="center" weight={500} size="xl" mt="0.5rem" mb="1rem">NO DATA</Text>
+        }
       </Modal>
 
       <Title 
