@@ -52,17 +52,17 @@ const WorkStopwatch = ({ changeState, session }) => {
       />
       <Group position="center" spacing="xs">
         { isRunning // play/pause buttons
-          ? <ActionIcon color="dark" onClick={pause}> 
+          ? <ActionIcon radius="md" color="dark" onClick={pause}> 
               <IconPlayerPause /> 
             </ActionIcon>
-          : <ActionIcon color="dark" onClick={start}>
+          : <ActionIcon radius="md" color="dark" onClick={start}>
               <IconPlayerPlay />
           </ActionIcon>
         }
-        <ActionIcon color="dark" onClick={endStopwatch}>
+        <ActionIcon radius="md" color="dark" onClick={endStopwatch}>
           <IconPlayerStop />
         </ActionIcon>
-        <ActionIcon color="dark" onClick={reset}>
+        <ActionIcon radius="md" color="dark" onClick={reset}>
           <IconReload />
         </ActionIcon>
       </Group>

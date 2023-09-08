@@ -29,19 +29,20 @@ const BreakTimer = ({ changeState, expiryTimestamp, clock }) => {
       />
       <Group position="center" spacing="xs">
         { isRunning // play/pause buttons
-          ? <ActionIcon color="dark" onClick={pause}> 
+          ? <ActionIcon radius="md" color="dark" onClick={pause}> 
               <IconPlayerPause /> 
             </ActionIcon>
-          : <ActionIcon color="dark" onClick={start}>
+          : <ActionIcon radius="md" color="dark" onClick={start}>
               <IconPlayerPlay />
           </ActionIcon>
         }
 
-        <ActionIcon color="dark" onClick={() => { pause(); changeState(); }}>
+        <ActionIcon radius="md" color="dark" onClick={() => { pause(); changeState(); }}>
           <IconPlayerStop />
         </ActionIcon>
         <ActionIcon
           color="dark"
+          radius="md"
           onClick={() => {
             // Restarts to original timer
             const time = new Date();

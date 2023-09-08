@@ -107,7 +107,7 @@ const SettingsModal = ({ updateDivisor, divisor, changeColorSetting, session }) 
       </Modal>
       
       {/* Open Button */}
-      <ActionIcon color="dark" ml="25em" variant="subtle" onClick={open}>
+      <ActionIcon color="dark" ml="25em" variant="subtle" radius="md" onClick={open}>
         <IconSettings size="1.5rem" />
       </ActionIcon> 
     </Group>

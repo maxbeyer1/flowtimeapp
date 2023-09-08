@@ -9,7 +9,7 @@ import StatsTable from "./StatsTable";
 
 const useStyles = createStyles((theme) => ({
   link: {
-    marginLeft: '15rem !important',
+    left: '12rem !important',
     textDecoration: 'none',
     display: 'inline-block',
     // underline effect on hover
@@ -85,7 +85,6 @@ const StatsModal = ({ session }) => {
         href="#" 
         onClick={open} 
         order={4} 
-        ml="2rem"
         className={classes.link}
       >
         STATS

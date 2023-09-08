@@ -66,11 +66,10 @@ const App = () => {
   // or light mode if not supported
   // preferredColorScheme --> user's system preferred color scheme
   const preferredColorScheme = useColorScheme();
-  // const [colorSchemeSetting, setColorSchemeSetting] = useLocalStorage({
-  //   key: 'color-scheme', defaultValue: ''
-  // });
+
   // colorSchemeSetting --> setting in Supabase
   const [colorSchemeSetting, setColorSchemeSetting] = useState('');
+  
   // colorScheme --> current color scheme
   // if colorSchemeSetting is set, use that
   // otherwise, use preferredColorScheme

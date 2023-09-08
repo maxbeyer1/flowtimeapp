@@ -9,6 +9,7 @@ import EmailChangeModal from "./EmailChangeModal";
 
 const useStyles = createStyles((theme) => ({
   link: {
+    left: '13.5rem',
     textDecoration: 'none',
     display: 'inline-block',
     // underline effect on hover
@@ -111,7 +112,6 @@ const AccountModal = ({ session }) => {
         href="#" 
         onClick={open} 
         order={4} 
-        ml="2rem"
         className={classes.link}
       >
         ACCOUNT

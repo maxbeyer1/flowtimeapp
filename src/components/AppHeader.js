@@ -1,40 +1,16 @@
 import React from "react";
 
-import { Flex, Title, createStyles, rem } from "@mantine/core";
+import { Flex, Title } from "@mantine/core";
 import AuthModal from "./AuthModal";
 import AccountModal from "./AccountModal";
 import StatsModal from "./StatsModal";
-
-const useStyles = createStyles((theme) => ({
-  link: {
-    textDecoration: 'none',
-    display: 'inline-block',
-    // underline effect on hover
-    position: 'relative',
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      left: 0,
-      bottom: 0,
-      width: '100%',
-      height: rem(2),
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.colors.dark[9],
-      opacity: 0,
-      transition: 'opacity 200ms ease',
-    },
-    '&:hover::after': {
-      opacity: 1,
-    },
-  },
-}));
+import InfoModal from "./InfoModal";
 
 const AppHeader = ({ session }) => {
-  const { classes } = useStyles();
-
   return (
-    <Flex justify="left" align="center">
+    <Flex justify="left" align="center" style={{ maxWidth: '32rem' }}>
       <Title order={3}>FLOWTIME</Title>
-      {/* <Title className={classes.link} component="a" href="#" order={4} ml="15rem">STATS</Title> */}
+      <InfoModal />
       <StatsModal session={session} />      
       {!session ? <AuthModal /> : <AccountModal key={session.user.id} session={session} />}
     </Flex>
