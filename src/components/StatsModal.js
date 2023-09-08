@@ -63,6 +63,7 @@ const StatsModal = ({ session }) => {
   // update settings when session changes or modal opens 
   useEffect(() => {
     if (session) getSettings();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, opened]);
 
   return (

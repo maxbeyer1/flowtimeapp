@@ -13,6 +13,7 @@ const WorkStopwatch = ({ changeState, session }) => {
     seconds,
     minutes,
     hours,
+    // eslint-disable-next-line no-unused-vars
     days,
     isRunning,
     start,

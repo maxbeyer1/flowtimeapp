@@ -27,6 +27,7 @@ const SettingsModal = ({ updateDivisor, divisor, changeColorSetting, session }) 
   // Allows for current divisor to be input placeholder
   useEffect(() => {
     setDivisorValue(Number(divisor));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [divisor]);
 
   // CSS classes
@@ -37,7 +38,7 @@ const SettingsModal = ({ updateDivisor, divisor, changeColorSetting, session }) 
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
   async function updateSettings(divisor, scheme) {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('profiles')
       .update({ settings: [{ breakDivisor: divisor, colorScheme: scheme }] })
       .eq('id', session.user.id)
